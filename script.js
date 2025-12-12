@@ -1,14 +1,17 @@
 // 🔥 CONFIG FIREBASE
 firebase.initializeApp({
-  apiKey: "INSERISCI",
-  authDomain: "INSERISCI",
+  apiKey: "AIzaSyDXdzIjSD36C99h4H55oA4-xwo5iGPmyrg",
+  authDomain: "babbo-natale-segreto-a4b2c.firebaseapp.com",
   databaseURL: "https://babbo-natale-segreto-a4b2c-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "INSERISCI"
+  projectId: "babbo-natale-segreto-a4b2c",
+  storageBucket: "babbo-natale-segreto-a4b2c.appspot.com",
+  messagingSenderId: "789273540190",
+  appId: "1:789273540190:web:da0d75ac0a0423279926cf"
 });
 
 const db = firebase.database();
 
-// 📌 DOM (ora è sicuro: script è in fondo all'HTML)
+// 📌 DOM
 const nameInput = document.getElementById("nameInput");
 const posInput = document.getElementById("posInput");
 const login = document.getElementById("login");
