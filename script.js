@@ -1,14 +1,10 @@
-// 🔥 CONFIG FIREBASE (inserita correttamente)
+// 🔥 CONFIG FIREBASE
 firebase.initializeApp({
-  apiKey: "AIzaSyDXdzIjSD36C99h4H55oA4-xwo5iGPmyrg",
-  authDomain: "babbo-natale-segreto-a4b2c.firebaseapp.com",
-  databaseURL: "https://babbo-natale-segreto-a4b2c-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "babbo-natale-segreto-a4b2c",
-  storageBucket: "babbo-natale-segreto-a4b2c.firebasestorage.app",
-  messagingSenderId: "789273540190",
-  appId: "1:789273540190:web:da0d75ac0a0423279926cf"
+  apiKey: "INSERISCI",
+  authDomain: "INSERISCI",
+  databaseURL: "INSERISCI", // URL DEL REALTIME DATABASE
+  projectId: "INSERISCI"
 });
-
 
 const db = firebase.database();
 
@@ -25,7 +21,7 @@ const endGameBtn = document.getElementById("endGameBtn");
 
 let me = null;
 
-// 👉 ENTRA NEL GIOCO (AVVIO GARANTITO)
+// 👉 ENTRA NEL GIOCO
 joinBtn.addEventListener("click", () => {
   const name = nameInput.value.trim();
   const pos = parseInt(posInput.value);
@@ -43,30 +39,21 @@ joinBtn.addEventListener("click", () => {
     skip: false
   });
 
-  // 🔥 FORZA L'AVVIO DEL TURNO SE NON ESISTE
-  db.ref("turn").transaction(current => {
-    return current === null ? pos : current;
+  db.ref("turn").once("value", snap => {
+    if (!snap.exists()) db.ref("turn").set(pos);
   });
 
   login.classList.add("hidden");
   game.classList.remove("hidden");
 });
 
-// 👉 AGGIORNA TURNO
+// 👉 TURNO IN TEMPO REALE
 db.ref("turn").on("value", snap => {
-  const turn = snap.val();
-
-  if (turn === null) {
-    status.innerText = "⏳ In attesa che il gioco inizi…";
-    buttons.style.display = "none";
-    return;
-  }
-
-  if (turn === me) {
+  if (snap.val() === me) {
     status.innerText = "🎅 È il tuo turno!";
     buttons.style.display = "block";
   } else {
-    status.innerText = "⏳ Attendi il tuo turno…";
+    status.innerText = "⏳ Attendi il tuo turno...";
     buttons.style.display = "none";
     message.innerText = "";
   }
@@ -100,47 +87,46 @@ endGameBtn.addEventListener("click", () => {
   nextTurn();
 });
 
-// 👉 PROSSIMO TURNO (CON RITARDO + ULTIMO GIOCATORE)
+// 👉 PROSSIMO TURNO (CON CASO ULTIMO GIOCATORE)
 function nextTurn() {
   db.ref("players").once("value", snap => {
-    const players = snap.val() || [];
-    const active = [];
+    const players = snap.val() || {};
+    let activePlayers = [];
 
     for (let i = 1; i <= 8; i++) {
       if (players[i] && players[i].active) {
-        active.push(i);
+        activePlayers.push(i);
       }
     }
 
-    setTimeout(() => {
+    // nessuno attivo
+    if (activePlayers.length === 0) {
+      db.ref("turn").set(null);
+      return;
+    }
 
-      if (active.length === 0) {
-        db.ref("turn").set(null);
-        return;
+    // un solo giocatore → continua lui
+    if (activePlayers.length === 1) {
+      db.ref("turn").set(activePlayers[0]);
+      return;
+    }
+
+    // caso normale
+    let current = me;
+
+    for (let i = 0; i < 8; i++) {
+      current = current % 8 + 1;
+      const p = players[current];
+
+      if (!p || !p.active) continue;
+
+      if (p.skip) {
+        db.ref("players/" + current + "/skip").set(false);
+        continue;
       }
 
-      if (active.length === 1) {
-        db.ref("turn").set(active[0]);
-        return;
-      }
-
-      let current = me;
-
-      for (let i = 0; i < 8; i++) {
-        current = current % 8 + 1;
-        const p = players[current];
-
-        if (!p || !p.active) continue;
-
-        if (p.skip) {
-          db.ref("players/" + current + "/skip").set(false);
-          continue;
-        }
-
-        db.ref("turn").set(current);
-        return;
-      }
-
-    }, 2000);
+      db.ref("turn").set(current);
+      return;
+    }
   });
 }
