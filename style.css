@@ -1,54 +1,53 @@
 body {
-    margin: 0;
-    font-family: system-ui, sans-serif;
-    background: #001a00;
-    color: white;
-    text-align: center;
-  }
-  
-  #bg-tree {
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(circle at 30% 30%, red 4px, transparent 5px),
-      radial-gradient(circle at 60% 40%, yellow 4px, transparent 5px),
-      radial-gradient(circle at 50% 60%, blue 4px, transparent 5px);
-    background-size: 120px 120px;
-    animation: blink 2s infinite alternate;
-    opacity: 0.35;
-    z-index: 0;
-  }
-  
-  @keyframes blink {
-    from { opacity: 0.25; }
-    to { opacity: 0.55; }
-  }
-  
-  .card {
-    position: relative;
-    z-index: 2;
-    margin: 15vh auto;
-    width: 90%;
-    max-width: 420px;
-    background: rgba(0,0,0,0.7);
-    padding: 20px;
-    border-radius: 16px;
-  }
-  
-  input, button {
-    width: 90%;
-    padding: 12px;
-    margin: 6px;
-    font-size: 18px;
-    border-radius: 10px;
-    border: none;
-  }
-  
-  button {
-    cursor: pointer;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #001a00;
+  color: white;
+  text-align: center;
+}
+
+#bg-tree {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 30%, red 4px, transparent 5px),
+    radial-gradient(circle at 60% 40%, yellow 4px, transparent 5px),
+    radial-gradient(circle at 50% 60%, blue 4px, transparent 5px);
+  background-size: 120px 120px;
+  animation: blink 2s infinite alternate;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+@keyframes blink {
+  from { opacity: 0.25; }
+  to { opacity: 0.55; }
+}
+
+.card {
+  position: relative;
+  z-index: 2;
+  margin: 15vh auto;
+  width: 90%;
+  max-width: 420px;
+  background: rgba(0,0,0,0.7);
+  padding: 20px;
+  border-radius: 16px;
+}
+
+input, button {
+  width: 90%;
+  padding: 12px;
+  margin: 6px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
