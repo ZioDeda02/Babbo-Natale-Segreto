@@ -2,7 +2,7 @@
 firebase.initializeApp({
   apiKey: "INSERISCI",
   authDomain: "INSERISCI",
-  databaseURL: "https://babbo-natale-segreto-a4b2c-default-rtdb.europe-west1.firebasedatabase.app/",
+  databaseURL: "https://babbo-natale-segreto-a4b2c-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "INSERISCI"
 });
 
