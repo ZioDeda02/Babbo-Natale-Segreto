@@ -49,16 +49,7 @@ joinBtn.addEventListener("click", () => {
 
 // 👉 TURNO IN TEMPO REALE
 db.ref("turn").on("value", snap => {
-  const turn = snap.val();
-
-  // 🔹 se il turno non esiste ancora, non mostrare "attendi"
-  if (turn === null) {
-    status.innerText = "⏳ In attesa che il gioco inizi...";
-    buttons.style.display = "none";
-    return;
-  }
-
-  if (turn === me) {
+  if (snap.val() === me) {
     status.innerText = "🎅 È il tuo turno!";
     buttons.style.display = "block";
   } else {
@@ -67,7 +58,6 @@ db.ref("turn").on("value", snap => {
     message.innerText = "";
   }
 });
-
 
 // 👉 PESCA
 buttons.addEventListener("click", e => {
@@ -97,7 +87,7 @@ endGameBtn.addEventListener("click", () => {
   nextTurn();
 });
 
-// 👉 PROSSIMO TURNO (CON RITARDO DI 2 SECONDI)
+// 👉 PROSSIMO TURNO (CON CASO ULTIMO GIOCATORE)
 function nextTurn() {
   db.ref("players").once("value", snap => {
     const players = snap.val() || {};
@@ -111,17 +101,13 @@ function nextTurn() {
 
     // nessuno attivo
     if (activePlayers.length === 0) {
-      setTimeout(() => {
-        db.ref("turn").set(null);
-      }, 2000);
+      db.ref("turn").set(null);
       return;
     }
 
     // un solo giocatore → continua lui
     if (activePlayers.length === 1) {
-      setTimeout(() => {
-        db.ref("turn").set(activePlayers[0]);
-      }, 2000);
+      db.ref("turn").set(activePlayers[0]);
       return;
     }
 
@@ -139,10 +125,7 @@ function nextTurn() {
         continue;
       }
 
-      setTimeout(() => {
-        db.ref("turn").set(current);
-      }, 2000);
-
+      db.ref("turn").set(current);
       return;
     }
   });
