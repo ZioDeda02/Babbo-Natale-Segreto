@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Babbo Natale Segreto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="bg-tree"></div>
+
+<div class="card" id="login">
+  <h2>🎄 Entra nel gioco</h2>
+  <input id="nameInput" placeholder="Il tuo nome">
+  <input id="posInput" type="number" min="1" max="8" placeholder="Posizione (1–8)">
+  <button id="joinBtn">Entra</button>
+</div>
+
+<div class="card hidden" id="game">
+  <h2 id="status">⏳ Attendi...</h2>
+
+  <div id="buttons">
+    <button data-pick="bonus">🎁</button>
+    <button data-pick="surprise">🎉</button>
+    <button data-pick="fake">🎭</button>
+    <button data-pick="skip">⏭️</button>
+    <button id="endGameBtn">🎅 Nome pescato</button>
+  </div>
+
+  <p id="message"></p>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
