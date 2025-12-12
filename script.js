@@ -1,12 +1,9 @@
 // 🔥 CONFIG FIREBASE
 firebase.initializeApp({
-  apiKey: "AIzaSyDXdzIjSD36C99h4H55oA4-xwo5iGPmyrg",
-  authDomain: "babbo-natale-segreto-a4b2c.firebaseapp.com",
-  databaseURL: "https://babbo-natale-segreto-a4b2c-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "babbo-natale-segreto-a4b2c",
-  storageBucket: "babbo-natale-segreto-a4b2c.appspot.com",
-  messagingSenderId: "789273540190",
-  appId: "1:789273540190:web:da0d75ac0a0423279926cf"
+  apiKey: "INSERISCI",
+  authDomain: "INSERISCI",
+  databaseURL: "INSERISCI", // URL DEL REALTIME DATABASE
+  projectId: "INSERISCI"
 });
 
 const db = firebase.database();
@@ -24,7 +21,7 @@ const endGameBtn = document.getElementById("endGameBtn");
 
 let me = null;
 
-// 👉 ENTRA
+// 👉 ENTRA NEL GIOCO
 joinBtn.addEventListener("click", () => {
   const name = nameInput.value.trim();
   const pos = parseInt(posInput.value);
@@ -50,9 +47,18 @@ joinBtn.addEventListener("click", () => {
   game.classList.remove("hidden");
 });
 
-// 👉 TURNO
+// 👉 TURNO IN TEMPO REALE
 db.ref("turn").on("value", snap => {
-  if (snap.val() === me) {
+  const turn = snap.val();
+
+  // 🔹 se il turno non esiste ancora, non mostrare "attendi"
+  if (turn === null) {
+    status.innerText = "⏳ In attesa che il gioco inizi...";
+    buttons.style.display = "none";
+    return;
+  }
+
+  if (turn === me) {
     status.innerText = "🎅 È il tuo turno!";
     buttons.style.display = "block";
   } else {
@@ -61,6 +67,7 @@ db.ref("turn").on("value", snap => {
     message.innerText = "";
   }
 });
+
 
 // 👉 PESCA
 buttons.addEventListener("click", e => {
@@ -90,10 +97,35 @@ endGameBtn.addEventListener("click", () => {
   nextTurn();
 });
 
-// 👉 PROSSIMO TURNO
+// 👉 PROSSIMO TURNO (CON RITARDO DI 2 SECONDI)
 function nextTurn() {
   db.ref("players").once("value", snap => {
     const players = snap.val() || {};
+    let activePlayers = [];
+
+    for (let i = 1; i <= 8; i++) {
+      if (players[i] && players[i].active) {
+        activePlayers.push(i);
+      }
+    }
+
+    // nessuno attivo
+    if (activePlayers.length === 0) {
+      setTimeout(() => {
+        db.ref("turn").set(null);
+      }, 2000);
+      return;
+    }
+
+    // un solo giocatore → continua lui
+    if (activePlayers.length === 1) {
+      setTimeout(() => {
+        db.ref("turn").set(activePlayers[0]);
+      }, 2000);
+      return;
+    }
+
+    // caso normale
     let current = me;
 
     for (let i = 0; i < 8; i++) {
@@ -107,10 +139,11 @@ function nextTurn() {
         continue;
       }
 
-      db.ref("turn").set(current);
+      setTimeout(() => {
+        db.ref("turn").set(current);
+      }, 2000);
+
       return;
     }
-
-    db.ref("turn").set(null);
   });
 }
