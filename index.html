@@ -18,7 +18,7 @@
 </div>
 
 <div class="card hidden" id="game">
-  <h2 id="status">⏳ In attesa che il gioco inizi…</h2>
+  <h2 id="status">⏳ Attendi...</h2>
 
   <div id="buttons">
     <button data-pick="bonus">🎁</button>
@@ -26,13 +26,13 @@
     <button data-pick="fake">🎭</button>
     <button data-pick="skip">⏭️</button>
     <button id="endGameBtn">🎅 Nome pescato</button>
-    <button id="resetBtn">🔄 Reset partita</button>
   </div>
 
   <p id="message"></p>
 </div>
 
-<!-- Firebase v9 -->
-<script type="module" src="script.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

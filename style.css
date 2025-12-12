@@ -6,7 +6,6 @@ body {
   text-align: center;
 }
 
-/* 🎄 Sfondo decorativo */
 #bg-tree {
   position: fixed;
   inset: 0;
@@ -17,8 +16,7 @@ body {
   background-size: 120px 120px;
   animation: blink 2s infinite alternate;
   opacity: 0.35;
-
-  pointer-events: none; /* 🔥 fondamentale */
+  z-index: 0;
 }
 
 @keyframes blink {
