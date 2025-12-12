@@ -9,6 +9,7 @@ firebase.initializeApp({
   appId: "1:789273540190:web:da0d75ac0a0423279926cf"
 });
 
+
 const db = firebase.database();
 
 // 📌 DOM
