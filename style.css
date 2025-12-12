@@ -16,6 +16,7 @@ body {
   background-size: 120px 120px;
   animation: blink 2s infinite alternate;
   opacity: 0.35;
+  z-index: 0;
 }
 
 @keyframes blink {
@@ -24,6 +25,8 @@ body {
 }
 
 .card {
+  position: relative;
+  z-index: 2;
   margin: 15vh auto;
   width: 90%;
   max-width: 420px;
